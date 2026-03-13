@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Analytics Placeholder - Insert Google Analytics code here -->
+    <!-- Google Analytics -->
+    <!-- End Google Analytics -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaletteSnap – Turn Any Image Into a Color Palette</title>
+    <meta name="description" content="Upload any image and instantly generate a color palette. Perfect for interior design, fashion, branding, art inspiration, and digital design.">
+    <meta name="keywords" content="color palette generator, extract colors from image, interior design palette, fashion color inspiration, PaletteSnap">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="PaletteSnap – Turn Any Image Into a Color Palette">
+    <meta property="og:description" content="Upload any image and instantly generate a color palette. Perfect for designers, artists, and creators.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://palettesnap.app">
+    <meta property="og:image" content="https://palettesnap.app/og-image.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PaletteSnap – Turn Any Image Into a Color Palette">
+    <meta name="twitter:description" content="Upload any image and instantly generate a color palette.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="#" class="logo">PaletteSnap</a>
+            <nav class="nav" id="nav">
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <ul class="nav-list" id="navList">
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#how-to-use" class="nav-link">How to Use</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">Turn Any Image Into a Color Palette</h1>
+                <p class="hero-subtitle">Upload a photo and instantly generate the dominant colors behind it.</p>
+                
+                <!-- Upload Area -->
+                <div class="upload-container" id="uploadContainer">
+                    <div class="upload-box" id="uploadBox">
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                        <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <h3 class="upload-title">Upload your image</h3>
+                        <p class="upload-text">Drag and drop an image or click to upload</p>
+                    </div>
+                    <p class="privacy-text">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        Your image is processed locally in your browser. No images are uploaded or stored.
+                    </p>
+                </div>
+
+                <!-- Preview Section (Hidden initially) -->
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-container">
+                        <img id="previewImage" alt="Uploaded preview">
+                        <canvas id="processCanvas" style="display: none;"></canvas>
+                    </div>
+                    
+                    <div class="palette-section">
+                        <h2 class="palette-title">Generated Palette</h2>
+                        <div class="palette-grid" id="paletteGrid">
+                            <!-- Color blocks generated by JS -->
+                        </div>
+                        <p class="palette-hint">Click a color to copy.</p>
+                        
+                        <div class="palette-actions">
+                            <button class="btn btn-primary" id="copyAllBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy All Colors
+                            </button>
+                            <button class="btn btn-secondary" id="downloadBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download Palette
+                            </button>
+                            <button class="btn btn-outline" id="shareBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                                    <circle cx="18" cy="5" r="3"></circle>
+                                    <circle cx="6" cy="12" r="3"></circle>
+                                    <circle cx="18" cy="19" r="3"></circle>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                </svg>
+                                Share Palette
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Section -->
+        <section class="usage" id="how-to-use">
+            <div class="container">
+                <h2 class="section-title">Ways You Can Use This Palette</h2>
+                <div class="usage-grid">
+                    <div class="usage-card">
+                        <div class="usage-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Interior Design Inspiration</h3>
+                        <p>Extract color schemes from your favorite room photos or nature scenes for your home decor.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M20.38 3.4a1.6 1.6 0 0 0-2.24 0l-10.6 10.6a1.6 1.6 0 0 0 0 2.24l2.24 2.24a1.6 1.6 0 0 0 2.24 0l10.6-10.6a1.6 1.6 0 0 0 0-2.24l-2.24-2.24z"></path>
+                                <path d="M14 7l3 3"></path>
+                                <path d="M17 4l3 3"></path>
+                                <path d="M2 20l4-1 1-4-4 1-1 4z"></path>
+                            </svg>
+                        </div>
+                        <h3>Fashion & Outfit Matching</h3>
+                        <p>Build cohesive wardrobes by extracting colors from inspiration photos or fabric swatches.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M2 12h20"></path>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <h3>Brand Identity Creation</h3>
+                        <p>Develop consistent brand colors by extracting palettes from mood boards or existing assets.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path>
+                                <path d="M12 6v6l4 2"></path>
+                            </svg>
+                        </div>
+                        <h3>Hair & Makeup References</h3>
+                        <p>Find the perfect shade combinations for beauty looks from reference images.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Digital Design & Flyers</h3>
+                        <p>Create harmonious designs for social media, posters, and digital artwork.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creator Section -->
+        <section class="creator" id="about">
+            <div class="container">
+                <div class="creator-content">
+                    <h2 class="section-title">Created by Treasure Tech</h2>
+                    <p class="creator-subtitle">Building simple tools on the web.</p>
+                    <a href="mailto:hello@treasuretech.dev?subject=Contact%20from%20PaletteSnap" class="btn btn-outline">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        Contact the Developer
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Startup Support Section -->
+        <section class="support">
+            <div class="container">
+                <div class="support-content">
+                    <h2 class="section-title">Interested in supporting future tools or startups by Treasure?</h2>
+                    <a href="mailto:hello@treasuretech.dev?subject=Interest%20in%20Treasure%20Startup&body=Hello%20Treasure%2C%20I%20saw%20your%20tool%20and%20I'm%20interested%20in%20learning%20more%20about%20your%20startup%20ideas." class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        Reach Out
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Treasure Tech</p>
+            <p class="footer-copy">All Rights Reserved &copy; 2026</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
